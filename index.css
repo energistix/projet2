@@ -9,6 +9,7 @@ a {
 }
 
 .under {
+    display: flex;
     border: 2px;
     border-radius: 5px;
     border-style: solid;
@@ -17,6 +18,7 @@ a {
     width: 50%;
     background-color: rgb(180, 180, 180);
     margin-bottom: 10px;
+    flex-direction: column;
 }
 
 #main {
