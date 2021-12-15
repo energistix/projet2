@@ -55,7 +55,7 @@ function guessLetter(letter) {
         if (losingGuesses >= maxSteps) {
             winDisplay.innerHTML = `${red(
                 "Perdu"
-            )}, le mot etait <span class="red">${red(word)}</span>`
+            )}, le mot était <span class="red">${red(word)}</span>`
             going = false
         }
     }
