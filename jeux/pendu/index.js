@@ -31,7 +31,8 @@ function render() {
         .map((l) => (guesses.includes(l) ? l : "_"))
         .join("")}`
     if (!display.includes("_")) {
-        winDisplay.innerText = "Gagnée"
+        const green = (text) => `<span class="green">${text}</span>`
+        winDisplay.innerHTML = green("Gagnée")
         going = false
     }
     wordDisplay.innerText = display
@@ -39,6 +40,7 @@ function render() {
     wrongGuesses.innerText = `Mauvaises lettres assayés : ${guesses
         .filter((l) => !word.includes(l))
         .join(", ")}`
+    stateImg.src = `./assets/${losingGuesses}.png`
 }
 render()
 
@@ -49,8 +51,11 @@ function guessLetter(letter) {
     } else {
         wrongGuesses.innerText += letter
         losingGuesses++
+        const red = (text) => `<span class="red">${text}</span>`
         if (losingGuesses >= maxSteps) {
-            winDisplay.innerText = "Perdu"
+            winDisplay.innerHTML = `${red(
+                "Perdu"
+            )}, le mot etait <span class="red">${red(word)}</span>`
             going = false
         }
     }
@@ -64,5 +69,6 @@ document.getElementById("reset").addEventListener("click", () => {
         .replace(/\p{Diacritic}/gu, "")
     losingGuesses = 0
     going = true
+    winDisplay.innerText = ""
     render()
 })
