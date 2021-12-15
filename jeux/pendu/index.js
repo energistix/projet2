@@ -5,6 +5,8 @@ const words =
         " "
     )
 const word = words[Math.floor(Math.random() * words.length)]
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
 const guesses = []
 let going = true
 
