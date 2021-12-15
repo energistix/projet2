@@ -26,7 +26,7 @@ document.addEventListener("keypress", (e) => {
 })
 
 function render() {
-    const display = `Le mot a trouvé : ${word
+    const display = `Le mot à trouver : ${word
         .split("")
         .map((l) => (guesses.includes(l) ? l : "_"))
         .join("")}`
@@ -36,8 +36,8 @@ function render() {
         going = false
     }
     wordDisplay.innerText = display
-    losingSteps.innerText = `Nombre d'étape jusqu'as la défaite : ${losingGuesses}/${maxSteps}`
-    wrongGuesses.innerText = `Mauvaises lettres assayés : ${guesses
+    losingSteps.innerText = `Nombre d'étapes jusqu'à la défaite : ${losingGuesses}/${maxSteps}`
+    wrongGuesses.innerText = `Mauvaises lettres esseyées : ${guesses
         .filter((l) => !word.includes(l))
         .join(", ")}`
     stateImg.src = `./assets/${losingGuesses}.png`

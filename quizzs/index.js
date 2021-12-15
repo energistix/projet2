@@ -30,7 +30,7 @@ class Form {
     }
 
     updateScoreDisplay() {
-        this.completedDisplay.innerText = `Quesstions complétés : ${
+        this.completedDisplay.innerText = `Questions complétés : ${
             this.appliedNumber
         }/${this.questionNumber} ${Math.round(
             (this.appliedNumber / this.questionNumber) * 100

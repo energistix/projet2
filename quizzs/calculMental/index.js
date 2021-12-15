@@ -2,12 +2,12 @@ const form = new Form()
 
 form.addQuestion(
     "radio",
-    "Les priorités de calcul",
+    "Les priorités de calcul :",
     [
         "Les multiplications passent avant les additions et soustractions",
-        "L'odre des opérations n'as aucune importance",
-        "Les opérations de meme propriétés sont calculés de droite a gauche",
-        "Les opérations de meme propriétés sont calculés de gauche a droite",
+        "L'odre des opérations n'a aucune importance",
+        "Les opérations de même priorités sont calculées de droite à gauche",
+        "Les opérations de même priorités sont calculées de gauche à droite",
     ],
     [0, 3]
 )
