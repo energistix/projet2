@@ -7,6 +7,7 @@ let words =
 let word = words[Math.floor(Math.random() * words.length)]
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
+
 let guesses = []
 let going = true
 
@@ -14,6 +15,7 @@ const wordDisplay = document.getElementById("wordDisplay")
 const losingSteps = document.getElementById("losingSteps")
 const wrongGuesses = document.getElementById("wrongGuesses")
 const winDisplay = document.getElementById("winDisplay")
+const stateImg = document.getElementById("stateImg")
 
 const regex = /^[a-z]$/
 
