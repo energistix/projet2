@@ -1,0 +1,7 @@
+img {
+    image-rendering: pixelated;
+    width: 10rem;
+    height: 10rem;
+    border: 1rem black solid;
+    padding: 1rem;
+}
