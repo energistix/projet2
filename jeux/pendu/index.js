@@ -16,6 +16,7 @@ const losingSteps = document.getElementById("losingSteps")
 const wrongGuesses = document.getElementById("wrongGuesses")
 const winDisplay = document.getElementById("winDisplay")
 const stateImg = document.getElementById("stateImg")
+const chrono = new Chrono(document.getElementById("infos"))
 
 const regex = /^[a-z]$/
 
@@ -34,6 +35,7 @@ function render() {
         const green = (text) => `<span class="green">${text}</span>`
         winDisplay.innerHTML = green("Gagnée")
         going = false
+        chrono.stop()
     }
     wordDisplay.innerText = display
     losingSteps.innerText = `Nombre d'étapes jusqu'à la défaite : ${losingGuesses}/${maxSteps}`
@@ -57,6 +59,7 @@ function guessLetter(letter) {
                 "Perdu"
             )}, le mot était <span class="red">${red(word)}</span>`
             going = false
+            chrono.stop()
         }
     }
     render()
@@ -70,5 +73,6 @@ document.getElementById("reset").addEventListener("click", () => {
     losingGuesses = 0
     going = true
     winDisplay.innerText = ""
+    chrono.restart()
     render()
 })

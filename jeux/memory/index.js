@@ -12,7 +12,7 @@ class Game {
         this.mainElement.appendChild(this.gameView)
         this.mainElement.appendChild(this.scoreDisplay)
         this.mainElement.appendChild(this.resetButton)
-        this.chrono = new chrono(this.mainElement)
+        this.chrono = new Chrono(this.mainElement)
 
         parent.appendChild(this.mainElement)
 

@@ -2,7 +2,7 @@ function formatNumber(n = 0) {
     return n.toString().padStart(2, "0")
 }
 
-class chrono {
+class Chrono {
     /**
      *
      * @param {HTMLElement} parent
