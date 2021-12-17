@@ -5,3 +5,24 @@ img {
     border: 1rem black solid;
     padding: 1rem;
 }
+
+#main {
+    display: flex;
+    flex-direction: column;
+}
+
+#game {
+    width: 42rem;
+    height: 14rem;
+}
+
+#info {
+    border: 1rem black solid;
+    display: flex;
+    flex-direction: column;
+    width: 40rem;
+}
+
+.info {
+    width: 40rem;
+}
