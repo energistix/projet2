@@ -1,6 +1,6 @@
 class Game {
     constructor(parent = document.body) {
-        this.size = 2
+        this.size = 6
 
         this.mainElement = document.createElement("div")
         this.gameView = document.createElement("table")
