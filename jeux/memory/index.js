@@ -81,10 +81,6 @@ class Game {
             this.stats.foundPairs++
             if (this.stats.totalPairs === this.stats.foundPairs) {
                 this.won = true
-                addGame({
-                    turns: this.stats.turns,
-                    chrono: this.chrono.render(),
-                })
                 this.chrono.stop()
             }
             this.shownImages = []
