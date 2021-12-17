@@ -36,13 +36,10 @@ class Chrono {
         this.render()
     }
 
-    /**
-     * @private
-     */
     render() {
-        this.element.innerText =
+        return (this.element.innerText =
             (this.hours > 0 ? `${formatNumber(this.hours)}:` : "") +
-            `${formatNumber(this.minutes)}:${formatNumber(this.seconds)}`
+            `${formatNumber(this.minutes)}:${formatNumber(this.seconds)}`)
     }
 
     stop() {
