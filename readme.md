@@ -20,19 +20,23 @@ Quiz sur le calcul mental avec des questions aléatoires
 
 ### Démineur
 
-Placement aléatoire des bombes (partiellement implémenté)
+Placement aléatoire des bombes (a refaire)
 
-Affichage de la grille (cases cachés et visibles) (non implémenté)
+Affichage de la grille (cases cachés et visibles) (a faire)
 
 ### Memory (en cour):
 
-Choix de la taille de la grille (non implémenté)
+Choix de la taille de la grille (a faire)
 
-Stockage et affichage des scores d’anciennes parties (non implémenté)
+Stockage et affichage des scores d’anciennes parties (a faire)
 
 ### Pendu (terminé)
 
 ### Pierre papier ciseaux (terminé)
+
+### Snake (en cour)
+
+Meilleur affichage des coins du serpent (a faire)
 
 Lien utile:
 
