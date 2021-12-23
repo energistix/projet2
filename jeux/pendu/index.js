@@ -39,7 +39,7 @@ function render() {
     }
     wordDisplay.innerText = display
     losingSteps.innerText = `Nombre d'étapes jusqu'à la défaite : ${losingGuesses}/${maxSteps}`
-    wrongGuesses.innerText = `Mauvaises lettres esseyées : ${guesses
+    wrongGuesses.innerText = `Mauvaises lettres essayées : ${guesses
         .filter((l) => !word.includes(l))
         .join(", ")}`
     stateImg.src = `./assets/${losingGuesses}.png`

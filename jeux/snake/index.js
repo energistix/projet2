@@ -82,11 +82,11 @@ class Vec2D {
     }
 
     /**
-     * @param {Vec2D} offcet
+     * @param {Vec2D} offset
      */
-    add(offcet) {
-        this.x += offcet.x
-        this.y += offcet.y
+    add(offset) {
+        this.x += offset.x
+        this.y += offset.y
     }
 
     clone() {

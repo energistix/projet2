@@ -1,6 +1,6 @@
 # **Projet 2 NSI**
 
-## Quizs
+## Quiz
 
 ### Types de questions :
 
@@ -10,7 +10,7 @@ Questions a choix multiples
 
 Questions a texte
 
-### Diférents Quizs proposés
+### Différents Quiz proposés
 
 Quiz sur la résolution d'équation du second degrés
 

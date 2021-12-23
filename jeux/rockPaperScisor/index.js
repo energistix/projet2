@@ -1,5 +1,5 @@
-const images = ["paper", "rock", "scisors"]
-const frenchNames = ["le papier", "la pierre", "les sciseaux"]
+const images = ["paper", "rock", "scissors"]
+const frenchNames = ["le papier", "la pierre", "les ciseaux"]
 
 images.forEach((name, index) => {
     const img = document.createElement("img")
@@ -10,8 +10,8 @@ images.forEach((name, index) => {
     })
 })
 
-const PlayerChoiseDiv = document.getElementById("playerChoise")
-const AIChoiseDiv = document.getElementById("AIChoice")
+const PlayerChoiceDiv = document.getElementById("playerChoice")
+const AIChoiceDiv = document.getElementById("AIChoice")
 const winnerDisplayDiv = document.getElementById("winnerDisplay")
 
 function play(playerChoiceIndex) {
@@ -21,8 +21,8 @@ function play(playerChoiceIndex) {
         (a) => a === `${AIChoiceIndex}${playerChoiceIndex}`
     )
 
-    PlayerChoiseDiv.innerText = `Vous avez choisi ${frenchNames[playerChoiceIndex]}`
-    AIChoiseDiv.innerText = `L'IA as choisi ${frenchNames[AIChoiceIndex]}`
+    PlayerChoiceDiv.innerText = `Vous avez choisi ${frenchNames[playerChoiceIndex]}`
+    AIChoiceDiv.innerText = `L'IA as choisi ${frenchNames[AIChoiceIndex]}`
     winnerDisplayDiv.innerText = AIWon
         ? "l'ia a gagnée"
         : AIChoiceIndex === playerChoiceIndex

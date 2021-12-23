@@ -1,18 +1,18 @@
 const size = 50
 
 let cellNumberVertical = Math.floor(window.screen.width / size)
-let cellNumberHoryzontall = Math.floor(window.screen.height / size)
+let cellNumberHorizontal = Math.floor(window.screen.height / size)
 
 window.addEventListener("resize", () => {
     cellNumberVertical = Math.floor(window.screen.height / size)
-    cellNumberHoryzontall = Math.floor(window.screen.width / size)
+    cellNumberHorizontal = Math.floor(window.screen.width / size)
 })
 
 class Game {
     constructor() {
         this.grid = []
         this.cellNumberVertical = cellNumberVertical
-        this.cellNumberHoryzontall = cellNumberHoryzontall
+        this.cellNumberHorizontal = cellNumberHorizontal
         this.createImages()
         console.table(
             this.grid.map((line) => line.map((cell) => (cell.bomb ? 1 : 0)))
@@ -21,11 +21,11 @@ class Game {
 
     updateSize() {
         if (
-            cellNumberHoryzontall != this.cellNumberHoryzontall ||
+            cellNumberHorizontal != this.cellNumberHorizontal ||
             cellNumberVertical != this.cellNumberVertical
         ) {
             this.cellNumberVertical = cellNumberVertical
-            this.cellNumberHoryzontall = cellNumberHoryzontall
+            this.cellNumberHorizontal = cellNumberHorizontal
             this.grid.flat().map((cell) => cell.remove())
             this.grid = []
             this.createImages()
@@ -35,7 +35,7 @@ class Game {
     createImages() {
         for (let x = 0; x < this.cellNumberVertical; x++) {
             this.grid[x] = []
-            for (let y = 0; y < this.cellNumberHoryzontall; y++) {
+            for (let y = 0; y < this.cellNumberHorizontal; y++) {
                 const img = document.createElement("img")
                 img.style.top = `${y * size}px`
                 img.style.left = `${x * size}px`
@@ -79,7 +79,7 @@ class Game {
                     xCoord < 0 ||
                     xCoord >= this.cellNumberVertical ||
                     yCoord < 0 ||
-                    yCoord >= this.cellNumberHoryzontall
+                    yCoord >= this.cellNumberHorizontal
                 )
                     continue
                 if (!this.grid[xCoord][yCoord]) return
