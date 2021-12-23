@@ -1,4 +1,4 @@
-// verifiquations si deux arrays on le meme contenu
+// verifications si deux arrays on le meme contenu
 function arraysEqual(a, b) {
     if (a instanceof Array && b instanceof Array) {
         if (a.length != b.length) return false
@@ -6,7 +6,7 @@ function arraysEqual(a, b) {
         return true
     }
 }
-// une classe formulaire qui regroupe les questions enssembles
+// une classe formulaire qui regroupe les questions ensembles
 class Form {
     constructor(parent = document.body) {
         this.parentElement = document.createElement("div")
@@ -18,15 +18,15 @@ class Form {
         this.parentElement.appendChild(this.scoreDisplay)
         this.scoreDisplay.classList.add("scoreDisplay")
         this.completedDisplay = document.createElement("div")
-        this.succededDisplay = document.createElement("div")
+        this.succeededDisplay = document.createElement("div")
         this.winDisplay = document.createElement("div")
         this.questionNumber = 0
-        this.succededNumber = 0
+        this.succeededNumber = 0
         this.appliedNumber = 0
-        this.updateScoreDisplay()
         this.scoreDisplay.appendChild(this.completedDisplay)
-        this.scoreDisplay.appendChild(this.succededDisplay)
+        this.scoreDisplay.appendChild(this.succeededDisplay)
         this.scoreDisplay.appendChild(this.winDisplay)
+        this.updateScoreDisplay()
     }
 
     updateScoreDisplay() {
@@ -35,13 +35,14 @@ class Form {
         }/${this.questionNumber} ${Math.round(
             (this.appliedNumber / this.questionNumber) * 100
         )}%`
-        this.succededDisplay.innerText = `Questions réussis : ${
-            this.succededNumber
+        this.succeededDisplay.innerText = `Questions réussis : ${
+            this.succeededNumber
         }/${this.questionNumber} ${Math.round(
-            (this.succededNumber / this.questionNumber) * 100
+            (this.succeededNumber / this.questionNumber) * 100
         )}%`
-        if (this.succededNumber === this.questionNumber)
+        if (this.succeededNumber === this.questionNumber)
             this.winDisplay.innerText = "Bravo !"
+        else this.winDisplay.innerText = ""
     }
 
     addQuestion(kind, ...args) {
@@ -146,7 +147,7 @@ class radioQuestion extends Question {
         if (arraysEqual(this.tickedAnswers, this.correctAnswers)) {
             this.resultLabel.innerText = "bonne réponse"
             this.resultLabel.style.color = "green"
-            this.form.succededNumber++
+            this.form.succeededNumber++
         } else {
             this.resultLabel.innerText = "mauvaise réponse"
             this.resultLabel.style.color = "red"
@@ -209,7 +210,7 @@ class QCMQuestion extends Question {
         if (this.answersContainer.value == this.correctAnswer) {
             this.resultLabel.innerText = "bonne réponse"
             this.resultLabel.style.color = "green"
-            this.form.succededNumber++
+            this.form.succeededNumber++
         } else {
             this.resultLabel.innerText = "mauvaise réponse"
             this.resultLabel.style.color = "red"
@@ -252,7 +253,7 @@ class textQuestion extends Question {
         if (this.answerContainer.value == this.correctAnswer) {
             this.resultLabel.innerText = "bonne réponse"
             this.resultLabel.style.color = "green"
-            this.form.succededNumber++
+            this.form.succeededNumber++
         } else {
             this.resultLabel.innerText = "mauvaise réponse"
             this.resultLabel.style.color = "red"

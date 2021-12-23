@@ -5,7 +5,7 @@ form.addQuestion(
     "Les priorités de calcul :",
     [
         "Les multiplications passent avant les additions et soustractions",
-        "L'odre des opérations n'a aucune importance",
+        "L'ordre des opérations n'a aucune importance",
         "Les opérations de même priorités sont calculées de droite à gauche",
         "Les opérations de même priorités sont calculées de gauche à droite",
     ],
