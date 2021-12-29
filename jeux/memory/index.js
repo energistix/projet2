@@ -26,11 +26,31 @@ class Game {
             foundPairs: 0,
         }
 
+        this.createAllImages()
+
+        this.resetButton.addEventListener("click", () => {
+            this.reset()
+        })
+
+        this.updateScore()
+    }
+
+    removeAllImages() {
+        this.images.forEach((image) => image.remove())
+        this.images = []
+        for (let i = this.gameView.children.length - 1; i >= 0; i--) {
+            this.gameView.children[i].parentNode.removeChild(
+                this.gameView.children[i]
+            )
+        }
+    }
+
+    createAllImages() {
         const values = []
         for (let i = 0; i < this.size ** 2 / 2; i++) {
             values.push(i)
         }
-        const alreadyPlaced = []
+        let alreadyPlaced = []
 
         for (let i = 0; i < this.size; i++) {
             const tr = document.createElement("tr")
@@ -50,16 +70,20 @@ class Game {
             }
             this.gameView.appendChild(tr)
         }
-
-        this.resetButton.addEventListener("click", () => {
-            this.reset()
-        })
-
-        this.updateScore()
     }
 
     /**
-     *
+     * @param {number} size
+     */
+    changeSize(size) {
+        this.removeAllImages()
+
+        this.size = size
+
+        this.createAllImages()
+    }
+
+    /**
      * @param {GameImage} image
      */
     onclick(image) {
@@ -164,6 +188,10 @@ class GameImage {
         if (!this.won) {
             this.element.src = "./assets/base.png"
         }
+    }
+
+    remove() {
+        this.element.remove()
     }
 }
 const game = new Game()
