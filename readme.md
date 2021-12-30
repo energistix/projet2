@@ -18,7 +18,7 @@ Quiz sur le calcul mental avec des questions aléatoires
 
 ## Jeux (en cour)
 
-### Démineur
+### Démineur (en cour)
 
 Placement aléatoire des bombes (a refaire)
 
@@ -26,11 +26,13 @@ Affichage de la grille (cases cachés et visibles) (a faire)
 
 ### Memory (en cour):
 
-Choix de la taille de la grille (a faire)
+Choix de la taille de la grille
 
 Stockage et affichage des scores d’anciennes parties (a faire)
 
-### Pendu (terminé)
+### Pendu (en cour)
+
+ajout du clavier textuel sur mobile (a faire)
 
 ### Pierre papier ciseaux (terminé)
 

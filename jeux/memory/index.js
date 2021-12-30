@@ -1,5 +1,6 @@
 class Game {
     constructor(parent = document.body) {
+        this.maximumSize = 6
         this.size = 6
 
         this.mainElement = document.createElement("div")
@@ -8,10 +9,23 @@ class Game {
         this.scoreDisplay = document.createElement("div")
         this.resetButton = document.createElement("button")
         this.resetButton.innerText = "Recommencer"
+        this.sizeSelector = document.createElement("select")
+        for (let i = 2; i <= this.maximumSize; i += 2) {
+            const option = document.createElement("option")
+            option.innerText = i
+            option.value = i
+            this.sizeSelector.appendChild(option)
+        }
+        this.sizeSelector.value = this.maximumSize
+
+        this.sizeSelector.addEventListener("change", (e) => {
+            this.changeSize(e.target.value)
+        })
 
         this.mainElement.appendChild(this.gameView)
         this.mainElement.appendChild(this.scoreDisplay)
         this.mainElement.appendChild(this.resetButton)
+        this.mainElement.appendChild(this.sizeSelector)
         this.chrono = new Chrono(this.mainElement)
 
         parent.appendChild(this.mainElement)
@@ -80,6 +94,7 @@ class Game {
 
         this.size = size
 
+        this.reset()
         this.createAllImages()
     }
 
