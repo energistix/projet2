@@ -1,11 +1,11 @@
 const size = 50
 
-let cellNumberVertical = Math.floor(window.screen.width / size)
-let cellNumberHorizontal = Math.floor(window.screen.height / size)
+let cellNumberVertical = Math.floor(window.innerWidth / size) / 4
+let cellNumberHorizontal = Math.floor(window.innerHeight / size) / 2
 
 window.addEventListener("resize", () => {
-    cellNumberVertical = Math.floor(window.screen.height / size)
-    cellNumberHorizontal = Math.floor(window.screen.width / size)
+    cellNumberVertical = Math.floor(window.innerWidth / size)
+    cellNumberHorizontal = Math.floor(window.innerHeight / size)
 })
 
 class Game {
@@ -14,9 +14,6 @@ class Game {
         this.cellNumberVertical = cellNumberVertical
         this.cellNumberHorizontal = cellNumberHorizontal
         this.createImages()
-        console.table(
-            this.grid.map((line) => line.map((cell) => (cell.bomb ? 1 : 0)))
-        )
     }
 
     updateSize() {
@@ -39,7 +36,7 @@ class Game {
                 const img = document.createElement("img")
                 img.style.top = `${y * size}px`
                 img.style.left = `${x * size}px`
-                this.grid[x][y] = new Cell(img, x, y)
+                this.grid[x][y] = new Cell(this, img, x, y)
                 document.body.appendChild(img)
             }
         }
@@ -49,32 +46,38 @@ class Game {
     placeBombs() {
         this.grid.forEach((line) => {
             line.forEach((cell) => {
-                if (Math.random() > 0.5) cell.bomb = true
+                if (Math.random() > 0.9) cell.bomb = true
             })
         })
         this.grid.forEach((line) => {
             line.forEach((cell) => {
-                const neighboursBombs = this.checkNeighboringBombsCount(
+                const neighborsBombs = this.checkNeighboringBombsCount(
                     cell.x,
                     cell.y
                 )
-                if (neighboursBombs > 4) {
+                if (neighborsBombs > 4) {
                     this.removeAmontOfNeighboringBomb(
                         cell.x,
                         cell.y,
-                        neighboursBombs - 4
+                        neighborsBombs - 4
                     )
                 }
+            })
+        })
+
+        this.grid.forEach((line) => {
+            line.forEach((cell) => {
+                cell.updateNumber()
             })
         })
     }
 
     forEachNeighbor(x, y, f) {
-        for (let xOffcet = -1; xOffcet < 2; xOffcet++) {
-            for (let yOffcet = -1; yOffcet < 2; yOffcet++) {
-                if (xOffcet === 0 && yOffcet === 0) continue
-                let xCoord = x + xOffcet
-                let yCoord = y + yOffcet
+        for (let xOffset = -1; xOffset < 2; xOffset++) {
+            for (let yOffset = -1; yOffset < 2; yOffset++) {
+                if (xOffset === 0 && yOffset === 0) continue
+                let xCoord = x + xOffset
+                let yCoord = y + yOffset
                 if (
                     xCoord < 0 ||
                     xCoord >= this.cellNumberVertical ||
@@ -82,7 +85,7 @@ class Game {
                     yCoord >= this.cellNumberHorizontal
                 )
                     continue
-                if (!this.grid[xCoord][yCoord]) return
+                if (!this.grid[xCoord] || !this.grid[xCoord][yCoord]) return
                 f(this.grid[xCoord][yCoord])
             }
         }
@@ -95,43 +98,43 @@ class Game {
         })
         return count
     }
-
-    removeAmontOfNeighboringBomb(x, y, n) {
-        let count = 0
-        while (count < n) {
-            this.forEachNeighbor(x, y, (cell) => {
-                if (cell.bomb && count < n && Math.random() > 0.5) {
-                    cell.bomb = false
-                    count++
-                }
-            })
-        }
-    }
 }
 
 class Cell {
     /**
      *
+     * @param {Game} grid
      * @param {HTMLImageElement} element
      * @param {number} x
      * @param {number} y
      */
-    constructor(element, x, y) {
+    constructor(game, element, x, y) {
+        this.game = game
         this.element = element
         this.x = x
         this.y = y
-        this.element.src = "./assets/base.png"
-        this._bomb = false
+        this.bomb = false
     }
 
     set bomb(bomb) {
         this._bomb = bomb
-        if (bomb === false) this.element.src = "./assets/base.png"
-        else this.element.src = "./assets/bomb.png"
+        if (bomb === false) this.updateNumber()
+        else {
+            this.element.src = "./assets/bomb.png"
+            console.log("changing src to :", this.src)
+        }
     }
 
     get bomb() {
         return this._bomb
+    }
+
+    updateNumber() {
+        if (this._bomb) return
+        const neighboring = this.game.checkNeighboringBombsCount(this.x, this.y)
+        if (neighboring) this.element.src = `./assets/${neighboring}.png`
+        else this.src = "./assets/base.png"
+        console.log("changing src to :", this.src)
     }
 
     remove() {

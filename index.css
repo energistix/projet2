@@ -1,6 +1,11 @@
+:root {
+    --green: #67c14f;
+}
+
 * {
     margin: 0;
     white-space: nowrap;
+    color: var(--green);
 }
 
 h1 {
@@ -12,11 +17,17 @@ h2 {
 }
 
 body {
-    background-color: gray;
+    background: url("./background.jpg");
 }
 
 a {
+    text-decoration: none;
     font-size: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+    transform: translate(5px, 0);
 }
 
 .centered {
@@ -28,9 +39,16 @@ a {
 .category {
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
+    border: 2px solid var(--green);
     border-radius: 5px;
     padding: 10px;
-    background-color: rgb(180, 180, 180);
+    background-color: black;
     margin-bottom: 10px;
+}
+
+h1 {
+    border: 2px solid var(--green);
+    border-radius: 5px;
+    padding: 10px;
+    background-color: black;
 }
