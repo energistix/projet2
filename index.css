@@ -39,14 +39,10 @@ a:hover {
 .category {
     display: flex;
     flex-direction: column;
-    border: 2px solid var(--green);
-    border-radius: 5px;
-    padding: 10px;
-    background-color: black;
     margin-bottom: 10px;
 }
 
-h1 {
+.framed {
     border: 2px solid var(--green);
     border-radius: 5px;
     padding: 10px;

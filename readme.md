@@ -20,15 +20,13 @@ Quiz sur le calcul mental avec des questions aléatoires
 
 ### Démineur (en cour)
 
-Placement aléatoire des bombes (a refaire)
+Placement aléatoire des bombes
 
-Affichage de la grille (cases cachés et visibles) (a faire)
+Affichage de la grille
 
-### Memory (en cour):
+### Memory (terminé) :
 
 Choix de la taille de la grille
-
-Stockage et affichage des scores d’anciennes parties (a faire)
 
 ### Pendu (en cour)
 

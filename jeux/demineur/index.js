@@ -1,7 +1,7 @@
 const size = 50
 
-let cellNumberVertical = Math.floor(window.innerWidth / size) / 4
-let cellNumberHorizontal = Math.floor(window.innerHeight / size) / 2
+let cellNumberVertical = Math.floor(window.innerWidth / size)
+let cellNumberHorizontal = Math.floor(window.innerHeight / size)
 
 window.addEventListener("resize", () => {
     cellNumberVertical = Math.floor(window.innerWidth / size)
@@ -11,9 +11,17 @@ window.addEventListener("resize", () => {
 class Game {
     constructor() {
         this.grid = []
+        this.isLost = false
+
         this.cellNumberVertical = cellNumberVertical
         this.cellNumberHorizontal = cellNumberHorizontal
+
         this.createImages()
+    }
+
+    lost() {
+        this.isLost = true
+        document.getElementById("gameOver").style.visibility = "visible"
     }
 
     updateSize() {
@@ -23,8 +31,10 @@ class Game {
         ) {
             this.cellNumberVertical = cellNumberVertical
             this.cellNumberHorizontal = cellNumberHorizontal
+
             this.grid.flat().map((cell) => cell.remove())
             this.grid = []
+
             this.createImages()
         }
     }
@@ -47,21 +57,6 @@ class Game {
         this.grid.forEach((line) => {
             line.forEach((cell) => {
                 if (Math.random() > 0.9) cell.bomb = true
-            })
-        })
-        this.grid.forEach((line) => {
-            line.forEach((cell) => {
-                const neighborsBombs = this.checkNeighboringBombsCount(
-                    cell.x,
-                    cell.y
-                )
-                if (neighborsBombs > 4) {
-                    this.removeAmontOfNeighboringBomb(
-                        cell.x,
-                        cell.y,
-                        neighborsBombs - 4
-                    )
-                }
             })
         })
 
@@ -114,15 +109,48 @@ class Cell {
         this.x = x
         this.y = y
         this.bomb = false
+        this._hidden = true
+        this._src = "./assets/empty.png"
+        this.element.src = "./assets/base.png"
+
+        this.element.addEventListener("click", (event) => {
+            this.click(event)
+        })
+
+        this.element.addEventListener("contextmenu", () => {
+            this.flag()
+            return false
+        })
+
+        this.clicked = false
+        this.flagged = false
+    }
+
+    set hidden(hidden) {
+        this._hidden = hidden
+        if (hidden == false) this.element.src = this.src
+        else this.element = "./assets/empty.png"
+    }
+
+    get hidden() {
+        return this._hidden
     }
 
     set bomb(bomb) {
         this._bomb = bomb
         if (bomb === false) this.updateNumber()
         else {
-            this.element.src = "./assets/bomb.png"
-            console.log("changing src to :", this.src)
+            this.src = "./assets/bomb.png"
         }
+    }
+
+    set src(src) {
+        this._src = src
+        if (this.hidden == false) this.element.src = src
+    }
+
+    get src() {
+        return this._src
     }
 
     get bomb() {
@@ -132,13 +160,36 @@ class Cell {
     updateNumber() {
         if (this._bomb) return
         const neighboring = this.game.checkNeighboringBombsCount(this.x, this.y)
-        if (neighboring) this.element.src = `./assets/${neighboring}.png`
-        else this.src = "./assets/base.png"
-        console.log("changing src to :", this.src)
+        if (neighboring) this.src = `./assets/${neighboring}.png`
+        else this.src = "./assets/empty.png"
     }
 
     remove() {
         this.element.remove()
+    }
+
+    click(event) {
+        if (event?.button == 2 || this.flagged || this.game.isLost) return
+        if (this.clicked == true) return
+        this.clicked = true
+        this.hidden = false
+        if (this.bomb) this.game.lost()
+        if (this.src == "./assets/empty.png") {
+            this.game.forEachNeighbor(this.x, this.y, (cell) => {
+                if (cell.hidden) cell.click()
+            })
+        }
+    }
+
+    flag() {
+        if (this.game.isLost) return
+        if (!this.flagged && this.hidden) {
+            this.element.src = "./assets/flag.png"
+            this.flagged = true
+        } else {
+            this.element.src = "./assets/base.png"
+            this.flagged = false
+        }
     }
 }
 
