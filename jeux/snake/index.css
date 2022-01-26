@@ -17,16 +17,55 @@ img {
   font-size: 0;
 }
 
-#main {
+#container {
   width: 10rem;
   height: 10rem;
   border: 0.5rem solid black;
-  display: flex;
-  flex-direction: row;
   margin: auto;
   margin-top: 3%;
+  display: grid;
+}
+
+#grid {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+}
+
+#game-over {
+  z-index: 2;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: fit-content;
+  visibility: hidden;
+  background-color: red;
+  border: 2px solid black;
+}
+
+#game-over,
+#grid {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 0.5rem;
+  text-align: center;
 }
 
 body {
   margin: 0;
+}
+
+#restart {
+  zoom: 40%;
+  border: 2px solid black;
+  margin-bottom: 5px;
+  background-color: transparent;
+}
+
+#restart:hover {
+  cursor: pointer;
 }

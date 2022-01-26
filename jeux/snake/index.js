@@ -29,7 +29,7 @@ class Cell {
 class Grid {
   constructor() {
     this.mainElement = document.createElement("div")
-    this.mainElement.id = "main"
+    this.mainElement.id = "grid"
     this.map = []
     for (let x = 0; x < WIDTH; x++) {
       const lineElement = document.createElement("div")
@@ -171,7 +171,7 @@ class Snake {
     this.position.add(this.direction)
 
     if (this.position.x === -1 || this.position.x === WIDTH || this.position.y === -1 || this.position.y === HEIGHT) {
-      this.going = false
+      this.lose()
       return
     }
 
@@ -180,12 +180,18 @@ class Snake {
       this.apple.replace()
       this.desiredLength++
     } else if (this.grid.getImageValue(this.position) !== "default") {
-      this.going = false
+      this.lose()
     }
 
     this.grid.setImage(this.position, "head")
     this.grid.setRotation(this.position, this.angle)
     this.rotated = false
+  }
+
+  lose() {
+    this.going = false
+    document.getElementById("game-over").style.visibility = "visible"
+    document.getElementById("apple-display").textContent = this.desiredLength - 3
   }
 }
 
@@ -217,4 +223,10 @@ class Game {
   }
 }
 
-const game = new Game()
+let game = new Game()
+
+document.getElementById("restart").addEventListener("click", () => {
+  game.grid.mainElement.remove()
+  document.getElementById("game-over").style.visibility = "hidden"
+  game = new Game()
+})
