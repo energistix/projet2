@@ -23,6 +23,8 @@ img {
   border: 0.5rem solid black;
   display: flex;
   flex-direction: row;
+  margin: auto;
+  margin-top: 3%;
 }
 
 body {
