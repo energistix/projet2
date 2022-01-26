@@ -18,7 +18,7 @@ Quiz sur le calcul mental avec des questions aléatoires
 
 ## Jeux (en cour)
 
-### Démineur (en cour)
+### Démineur
 
 Placement aléatoire des bombes
 
