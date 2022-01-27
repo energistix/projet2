@@ -206,6 +206,7 @@ class Apple {
   }
 
   replace() {
+    if (!this.grid.map.some((line) => line.some((cell) => cell.value === "default"))) return
     this.position = Vec2D.random()
     while (this.grid.getImageValue(this.position) !== "default") {
       this.position = Vec2D.random()
