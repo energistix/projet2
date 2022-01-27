@@ -34,7 +34,8 @@ img {
   z-index: 1;
 }
 
-#game-over {
+#game-over,
+#game-won {
   z-index: 2;
   position: relative;
   left: 50%;
@@ -48,6 +49,7 @@ img {
 }
 
 #game-over,
+#game-won,
 #grid {
   grid-column: 1;
   grid-row: 1;
@@ -59,13 +61,15 @@ body {
   margin: 0;
 }
 
-#restart {
+#restart,
+#restart2 {
   zoom: 40%;
   border: 2px solid black;
   margin-bottom: 5px;
   background-color: transparent;
 }
 
-#restart:hover {
+#restart:hover,
+#restart2:hover {
   cursor: pointer;
 }

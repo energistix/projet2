@@ -206,7 +206,11 @@ class Apple {
   }
 
   replace() {
-    if (!this.grid.map.some((line) => line.some((cell) => cell.value === "default"))) return
+    if (!this.grid.map.some((line) => line.some((cell) => cell.value === "default"))) {
+      this.grid.going = false
+      document.getElementById("game-won").visibility = "visible"
+      return
+    }
     this.position = Vec2D.random()
     while (this.grid.getImageValue(this.position) !== "default") {
       this.position = Vec2D.random()
@@ -229,5 +233,11 @@ let game = new Game()
 document.getElementById("restart").addEventListener("click", () => {
   game.grid.mainElement.remove()
   document.getElementById("game-over").style.visibility = "hidden"
+  game = new Game()
+})
+
+document.getElementById("restart2").addEventListener("click", () => {
+  game.grid.mainElement.remove()
+  document.getElementById("game-won").style.visibility = "hidden"
   game = new Game()
 })
