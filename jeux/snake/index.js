@@ -200,6 +200,7 @@ class Apple {
    * @param {Game} grid
    */
   constructor(game) {
+    this.game = game
     this.grid = game.grid
     this.position = Vec2D.random()
     this.replace()
