@@ -197,16 +197,16 @@ class Snake {
 
 class Apple {
   /**
-   * @param {Grid} grid
+   * @param {Game} grid
    */
-  constructor(grid) {
-    this.grid = grid
+  constructor(game) {
+    this.grid = game.grid
     this.position = Vec2D.random()
     this.replace()
   }
 
   replace() {
-    if (!this.grid.map.some((line) => line.some((cell) => cell.value === "default"))) {
+    if (this.game.snake.desiredLength >= 100) {
       this.grid.going = false
       document.getElementById("game-won").visibility = "visible"
       return
@@ -223,7 +223,7 @@ class Apple {
 class Game {
   constructor() {
     this.grid = new Grid()
-    this.apple = new Apple(this.grid)
+    this.apple = new Apple(this)
     this.snake = new Snake(this.grid, this.apple)
   }
 }
