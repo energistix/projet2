@@ -203,7 +203,6 @@ class Apple {
     this.game = game
     this.grid = game.grid
     this.position = Vec2D.random()
-    this.replace()
   }
 
   replace() {
@@ -226,6 +225,7 @@ class Game {
     this.grid = new Grid()
     this.apple = new Apple(this)
     this.snake = new Snake(this.grid, this.apple)
+    this.apple.replace()
   }
 }
 
