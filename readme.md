@@ -34,9 +34,7 @@ ajout du clavier textuel sur mobile (a faire)
 
 ### Pierre papier ciseaux (terminé)
 
-### Snake (en cour)
-
-Meilleur affichage des coins du serpent (a faire)
+### Snake
 
 Lien utile:
 
