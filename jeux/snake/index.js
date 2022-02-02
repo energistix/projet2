@@ -225,6 +225,8 @@ class Game {
     this.grid = new Grid()
     this.apple = new Apple(this)
     this.snake = new Snake(this.grid, this.apple)
+    this.snake.position = new Vec2D(6, 6)
+    new Snake(this.grid, this.apple)
     this.apple.replace()
   }
 }
