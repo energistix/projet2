@@ -1,9 +1,21 @@
+const gameMods = {
+  twoPlayer: {
+    snakes: [
+      {
+        keys: ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"],
+      },
+      {
+        keys: ["z", "s", "d", "q"],
+      },
+    ],
+  },
+}
+
 class Game {
-  constructor() {
-    this.snakes = [
-      new Snake(this, ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"]),
-      new Snake(this, ["z", "s", "d", "q"]),
-    ]
+  constructor(gameMod) {
+    this.snakes = gameMod.snakes.map((config) => {
+      return new Snake(this, config)
+    })
   }
 }
 
@@ -52,4 +64,4 @@ class Snake {
   }
 }
 
-const game = new Game()
+const game = new Game(gameMods.twoPlayer)
