@@ -50,6 +50,11 @@ class Cell {
   get src() {
     return this._src
   }
+
+  set angle(angle) {
+    console.log(angle)
+    this.element.style.transform = `rotate(${angle}deg)`
+  }
 }
 
 class Grid {
@@ -81,20 +86,36 @@ class Grid {
    */
   wall(position) {
     if (position.x < 0 || position.x > WIDTH - 1 || position.y < 0 || position.y > HEIGHT - 1) return true
-    return this.map[position.x][position.y].src != "default"
+    return !["default", "apple"].includes(this.map[position.x][position.y].src)
   }
 
   /**
-   * @param {Vec2D} position
-   * @param {"body" | "head" | "tail" | "corner" | "default"} name
+   * @param {Vec2D | undefined} position
+   * @param {"body" | "head" | "tail" | "corner" | "default" | "apple"} name
    */
   setImage(position, name) {
+    if (!position) return
     this.map[position.x][position.y].src = name
+  }
+
+  /**
+   * @param {Vec2D | undefined} position
+   * @param {number} angle
+   */
+  setAngle(position, angle) {
+    if (!position) return
+    console.log(angle)
+    this.map[position.x][position.y].angle = angle
+  }
+
+  clear() {
+    this.map.forEach((column) => column.forEach((cell) => (cell.src = "default")))
   }
 }
 
 class Game {
   constructor(gameMod) {
+    this.gameMod = gameMod
     this.snakes = gameMod.snakes.map((keys) => {
       return new Snake(this, keys)
     })
@@ -104,7 +125,34 @@ class Game {
     setInterval(() => {
       this.snakes.forEach((snake) => snake.tick())
     }, 500)
+
+    this.placeApple()
   }
+
+  reset() {
+    this.grid.clear()
+    this.snakes = this.gameMod.snakes.map((keys) => {
+      return new Snake(this, keys)
+    })
+    this.placeApple()
+    document.getElementById("game-over")?.style.visibility
+  }
+
+  placeApple() {
+    /**
+     * @type Array<Cell>
+     */
+    const possibilities = []
+    this.grid.map.forEach((column) => {
+      column.forEach((cell) => {
+        if (cell.src === "default") possibilities.push(cell)
+      })
+    })
+    if (possibilities.length === 0) return this.win()
+    possibilities[Math.floor(Math.random() * possibilities.length)].src = "apple"
+  }
+
+  win() {}
 }
 
 class Vec2D {
@@ -144,18 +192,30 @@ class Snake {
     this.game = game
     this.lost = false
     this.desiredLength = config.desiredLength || 3
+    this.angle = 0
 
     const keysMap = new Map()
-    keysMap.set(config.keys[0], new Vec2D(0, 1))
-    keysMap.set(config.keys[1], new Vec2D(0, -1))
+    const angleMap = new Map()
+    keysMap.set(config.keys[0], new Vec2D(0, -1))
+    angleMap.set(config.keys[0], 0)
+
+    keysMap.set(config.keys[1], new Vec2D(0, 1))
+    angleMap.set(config.keys[1], 180)
+
     keysMap.set(config.keys[2], new Vec2D(1, 0))
+    angleMap.set(config.keys[2], 90)
+
     keysMap.set(config.keys[3], new Vec2D(-1, 0))
+    angleMap.set(config.keys[3], 270)
 
     this.direction = new Vec2D(0, 1)
     this.body = [new Vec2D(...config.position)]
 
     document.addEventListener("keydown", (ev) => {
-      if (keysMap.has(ev.key)) this.direction = keysMap.get(ev.key)
+      if (keysMap.has(ev.key)) {
+        this.direction = keysMap.get(ev.key)
+        this.angle = angleMap.get(ev.key)
+      }
     })
   }
 
@@ -163,12 +223,17 @@ class Snake {
     if (this.lost) return
     const newPos = this.body[0].clone().add(this.direction)
     if (this.game.grid.wall(newPos)) return this.lose()
+    if (this.game.grid.map[newPos.x][newPos.y].src === "apple") {
+      this.game.placeApple()
+      this.desiredLength++
+    }
+
     this.game.grid.setImage(this.body[0], "body")
     this.game.grid.setImage(newPos, "head")
+    this.game.grid.setAngle(newPos, this.angle)
     this.body.unshift(newPos)
 
     if (this.body.length > this.desiredLength) {
-      // @ts-ignore
       this.game.grid.setImage(this.body.pop(), "default")
       this.game.grid.setImage(this.body[this.body.length - 1], "tail")
     }
@@ -184,3 +249,7 @@ class Snake {
 }
 
 const game = new Game(gameMods.solo)
+
+document.getElementById("restart")?.addEventListener("click", () => {
+  game.reset()
+})
