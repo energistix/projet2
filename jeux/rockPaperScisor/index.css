@@ -26,9 +26,13 @@
   border: 1rem black solid;
   display: flex;
   flex-direction: column;
-  width: 40rem;
+  width: 38rem;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
 }
 
-.info {
-  width: 40rem;
+.gameImg:nth-child(2) {
+  border-left: none;
+  border-right: none;
 }
