@@ -8,6 +8,10 @@ img {
   image-rendering: pixelated;
 }
 
+.homeButton img {
+  zoom: 30%;
+}
+
 .line {
   height: 10rem;
   width: 1rem;
