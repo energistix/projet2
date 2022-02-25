@@ -36,6 +36,7 @@ class Cell {
     this.game = game
     this.position = position
     this.element = document.createElement("img")
+    this._angle = 0
 
     this.src = "default"
 
@@ -52,7 +53,12 @@ class Cell {
   }
 
   set angle(angle) {
+    this._angle = angle
     this.element.style.transform = `rotate(${angle}deg)`
+  }
+
+  get angle() {
+    return this._angle
   }
 }
 
@@ -98,6 +104,14 @@ class Grid {
   }
 
   /**
+   *
+   * @param {Vec2D} position
+   */
+  getImage(position) {
+    return this.map[position.x][position.y].src
+  }
+
+  /**
    * @param {Vec2D | undefined} position
    * @param {number} angle
    */
@@ -105,6 +119,15 @@ class Grid {
     if (!position) return
 
     this.map[position.x][position.y].angle = angle
+  }
+
+  /**
+   *
+   * @param {Vec2D} position
+   * @returns number
+   */
+  getAngle(position) {
+    return this.map[position.x][position.y].angle
   }
 
   clear() {
@@ -199,6 +222,7 @@ class Snake {
     this.lost = false
     this.desiredLength = config.desiredLength || 3
     this.angle = 180
+    this.rotated = false
 
     const keysMap = new Map()
     const angleMap = new Map()
@@ -221,6 +245,7 @@ class Snake {
       if (keysMap.has(ev.key)) {
         this.direction = keysMap.get(ev.key)
         this.angle = angleMap.get(ev.key)
+        this.rotated = true
       }
     })
   }
@@ -236,13 +261,21 @@ class Snake {
       document.getElementById("points").innerText = `${this.desiredLength - 3} Pommes`
     }
 
-    this.game.grid.setImage(this.body[0], "body")
+    if (this.rotated) {
+      this.game.grid.setImage(this.body[0], "corner")
+      this.rotated = false
+    } else this.game.grid.setImage(this.body[0], "body")
+
     this.game.grid.setAngle(newPos, this.angle)
     this.body.unshift(newPos)
 
     if (this.body.length > this.desiredLength) {
       this.game.grid.setImage(this.body.pop(), "default")
-      this.game.grid.setImage(this.body[this.body.length - 1], "tail")
+
+      const tailPosition = this.body[this.body.length - 1]
+      const offsetAngle = this.game.grid.getImage(tailPosition) === "corner" ? 90 : 0
+      this.game.grid.setAngle(tailPosition, this.game.grid.getAngle(tailPosition) + offsetAngle)
+      this.game.grid.setImage(tailPosition, "tail")
     }
 
     this.game.grid.setImage(newPos, "head")
