@@ -11,5 +11,7 @@ body {
 }
 
 #main {
+  position: absolute;
+  top: 5%;
   border: solid 5px black;
 }
