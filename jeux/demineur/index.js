@@ -173,6 +173,7 @@ class Cell {
   }
 
   flag() {
+    if (this.clicked) return
     if (this.game.isLost) return
     if (!this.flagged && this.hidden) {
       this.element.src = "./assets/flag.png"
