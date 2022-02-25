@@ -1,0 +1,12 @@
+.homeButton {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border: none;
+}
+
+.homeButton img {
+  width: 70px;
+  height: 70px;
+  border: none;
+}
