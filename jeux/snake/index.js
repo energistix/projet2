@@ -207,6 +207,20 @@ class Vec2D {
   clone() {
     return new Vec2D(this.x, this.y)
   }
+
+  /**
+   *
+   * @param {number} angle
+   * @returns {Vec2D}
+   */
+  static angleToDirectionVector(angle) {
+    return {
+      0: new Vec2D(0, 1),
+      90: new Vec2D(1, 0),
+      180: new Vec2D(0, -1),
+      270: new Vec2D(-1, 0),
+    }[angle]
+  }
 }
 
 class Snake {
@@ -273,8 +287,18 @@ class Snake {
       this.game.grid.setImage(this.body.pop(), "default")
 
       const tailPosition = this.body[this.body.length - 1]
-      const offsetAngle = this.game.grid.getImage(tailPosition) === "corner" ? 90 : 0
-      this.game.grid.setAngle(tailPosition, this.game.grid.getAngle(tailPosition) + offsetAngle)
+      // const offsetAngle = this.game.grid.getImage(tailPosition) === "corner" ? 90 : 0
+      let newTailAngle = this.game.grid.getAngle(tailPosition)
+
+      for (
+        let i = 0;
+        this.game.grid.getImage(tailPosition.clone().add(Vec2D.angleToDirectionVector(newTailAngle % 360))) !==
+          "body" && i < 4;
+        i++
+      )
+        newTailAngle += 90
+
+      this.game.grid.setAngle(tailPosition, newTailAngle)
       this.game.grid.setImage(tailPosition, "tail")
     }
 
