@@ -1,5 +1,5 @@
 body {
-  zoom: 275%;
+  zoom: 300%;
 }
 
 img {
@@ -17,17 +17,12 @@ img {
   font-size: 0;
 }
 
-#points {
-  position: absolute;
-  transform: translate(-50%, -100%);
-  left: 50%;
-}
-
 #container {
   width: 10rem;
   height: 10rem;
   border: 0.5rem solid black;
   margin: auto;
+  margin-top: 3%;
   display: grid;
 }
 

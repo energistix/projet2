@@ -1,187 +1,73 @@
-// @ts-check
-
-const HEIGHT = 10
 const WIDTH = 10
-
-const gameMods = {
-  twoPlayer: {
-    snakes: [
-      {
-        keys: ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"],
-        position: [0, 0],
-      },
-      {
-        keys: ["z", "s", "d", "q"],
-        position: [WIDTH - 1, 0],
-      },
-    ],
-  },
-  solo: {
-    snakes: [
-      {
-        keys: ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"],
-        position: [5, 5],
-      },
-    ],
-  },
-}
+const HEIGHT = 10
 
 class Cell {
   /**
-   * @param {Game} game
-   * @param {Vec2D} position
+   * @param {number} x
+   * @param {number} y
    * @param {HTMLElement} parent
    */
-  constructor(game, position, parent) {
-    this.game = game
-    this.position = position
+  constructor(x, y, parent) {
+    this.x = x
+    this.y = y
     this.element = document.createElement("img")
-    this._angle = 0
-
-    this.src = "default"
-
     parent.appendChild(this.element)
+    this.value = "default"
+    this.setImage("default")
   }
 
-  set src(src) {
-    this._src = src
+  setImage(src) {
+    this.value = src
     this.element.src = `./assets/${src}.png`
   }
 
-  get src() {
-    return this._src
-  }
-
-  set angle(angle) {
-    this._angle = angle
+  setRotation(angle) {
     this.element.style.transform = `rotate(${angle}deg)`
-  }
-
-  get angle() {
-    return this._angle
   }
 }
 
 class Grid {
-  /**
-   * @param {Game} game
-   */
-  constructor(game) {
-    this.game = game
-    this.mainElement = document.getElementById("grid")
+  constructor() {
+    this.mainElement = document.createElement("div")
+    this.mainElement.id = "grid"
     this.map = []
     for (let x = 0; x < WIDTH; x++) {
-      const columnElement = document.createElement("div")
-      columnElement.classList.add("line")
-      const column = []
+      const lineElement = document.createElement("div")
+      lineElement.classList.add("line")
+      const line = []
 
       for (let y = 0; y < HEIGHT; y++) {
-        column.push(new Cell(this.game, new Vec2D(x, y), columnElement))
+        line.push(new Cell(x, y, lineElement))
       }
 
-      this.map.push(column)
-      // @ts-ignore
-      this.mainElement.appendChild(columnElement)
+      this.map.push(line)
+      this.mainElement.appendChild(lineElement)
     }
+    document.getElementById("container").appendChild(this.mainElement)
   }
 
   /**
    * @param {Vec2D} position
-   * @returns {Boolean} isWall
+   * @param {string} src
    */
-  wall(position) {
-    if (position.x < 0 || position.x > WIDTH - 1 || position.y < 0 || position.y > HEIGHT - 1) return true
-    return !["default", "apple", "tail"].includes(this.map[position.x][position.y].src)
+  setImage(position, src) {
+    this.map[position.x][position.y].setImage(src)
   }
 
   /**
-   * @param {Vec2D | undefined} position
-   * @param {"body" | "head" | "tail" | "corner" | "default" | "apple"} name
-   */
-  setImage(position, name) {
-    if (!position) return
-    this.map[position.x][position.y].src = name
-  }
-
-  /**
-   *
    * @param {Vec2D} position
+   * @returns {string}
    */
-  getImage(position) {
-    return this.map[position.x][position.y].src
+  getImageValue(position) {
+    return this.map[position.x][position.y].value
   }
 
   /**
-   * @param {Vec2D | undefined} position
+   * @param {Vec2D} position
    * @param {number} angle
    */
-  setAngle(position, angle) {
-    if (!position) return
-
-    this.map[position.x][position.y].angle = angle
-  }
-
-  /**
-   *
-   * @param {Vec2D} position
-   * @returns number
-   */
-  getAngle(position) {
-    return this.map[position.x][position.y].angle
-  }
-
-  clear() {
-    this.map.forEach((column) => column.forEach((cell) => (cell.src = "default")))
-  }
-}
-
-class Game {
-  constructor(gameMod) {
-    this.gameMod = gameMod
-    this.grid = new Grid(this)
-
-    this.snakes = gameMod.snakes.map((config) => {
-      return new Snake(this, config)
-    })
-
-    setInterval(() => {
-      this.snakes.forEach((snake) => snake.tick())
-    }, 500)
-
-    this.placeApple()
-  }
-
-  reset() {
-    this.grid.clear()
-    this.snakes = this.gameMod.snakes.map((keys) => {
-      return new Snake(this, keys)
-    })
-    this.placeApple()
-    //@ts-ignore
-    document.getElementById("points").innerText = "0 Pommes"
-  }
-
-  placeApple() {
-    /**
-     * @type Array<Cell>
-     */
-    const possibilities = []
-
-    this.grid.map.forEach((column) => {
-      column.forEach((cell) => {
-        if (cell.src === "default") possibilities.push(cell)
-      })
-    })
-
-    if (possibilities.length === 0) return this.win()
-    const selectedCell = possibilities[Math.floor(Math.random() * possibilities.length)]
-    selectedCell.src = "apple"
-    selectedCell.angle = 0
-  }
-
-  win() {
-    //@ts-ignore
-    document.getElementById("game-won").style.visibility = "visible"
+  setRotation(position, angle) {
+    this.map[position.x][position.y].setRotation(angle)
   }
 }
 
@@ -201,129 +87,158 @@ class Vec2D {
   add(offset) {
     this.x += offset.x
     this.y += offset.y
-    return this
   }
 
   clone() {
     return new Vec2D(this.x, this.y)
   }
 
-  /**
-   *
-   * @param {number} angle
-   * @returns {Vec2D}
-   */
-  static angleToDirectionVector(angle) {
-    return {
-      0: new Vec2D(0, 1),
-      90: new Vec2D(1, 0),
-      180: new Vec2D(0, -1),
-      270: new Vec2D(-1, 0),
-    }[angle]
+  static random() {
+    return new Vec2D(Math.floor(Math.random() * WIDTH), Math.floor(Math.random() * HEIGHT))
   }
 }
 
 class Snake {
   /**
-   * @param {Game} game
-   * @param {object} config
-   * @param {Array<string>} config.keys
-   * @param {[number, number]} config.position
-   * @param {number} [config.desiredLength]
+   * @param {Grid} grid
+   * @param {Apple} apple
    */
-  constructor(game, config) {
-    this.game = game
-    this.lost = false
-    this.desiredLength = config.desiredLength || 3
-    this.angle = 180
+  constructor(grid, apple) {
+    this.grid = grid
+    this.apple = apple
+    this.position = new Vec2D(5, 5)
+    this.direction = new Vec2D(0, -1)
+    this.angle = 0
+    this.grid.setImage(this.position, "head")
+    this.bodyPositions = [this.position.clone()]
+    this.desiredLength = 3
+    this.actualLength = 1
+    this.lastTailPosition = this.position.clone()
     this.rotated = false
+    this.going = true
 
-    const keysMap = new Map()
-    const angleMap = new Map()
-    keysMap.set(config.keys[0], new Vec2D(0, -1))
-    angleMap.set(config.keys[0], 0)
-
-    keysMap.set(config.keys[1], new Vec2D(0, 1))
-    angleMap.set(config.keys[1], 180)
-
-    keysMap.set(config.keys[2], new Vec2D(1, 0))
-    angleMap.set(config.keys[2], 90)
-
-    keysMap.set(config.keys[3], new Vec2D(-1, 0))
-    angleMap.set(config.keys[3], 270)
-
-    this.direction = new Vec2D(0, 1)
-    this.body = [new Vec2D(...config.position)]
-
-    document.addEventListener("keydown", (ev) => {
-      if (keysMap.has(ev.key)) {
-        this.direction = keysMap.get(ev.key)
-        this.angle = angleMap.get(ev.key)
-        this.rotated = true
+    document.addEventListener("keydown", (event) => {
+      if (this.rotated) return
+      switch (event.key) {
+        case "ArrowUp":
+          if (this.angle !== 0 && this.angle !== 180) {
+            this.direction = new Vec2D(0, -1)
+            this.angle = 0
+            this.rotated = true
+          }
+          break
+        case "ArrowDown":
+          if (this.angle !== 0 && this.angle !== 180) {
+            this.direction = new Vec2D(0, 1)
+            this.angle = 180
+            this.rotated = true
+          }
+          break
+        case "ArrowRight":
+          if (this.angle !== 90 && this.angle !== 270) {
+            this.direction = new Vec2D(1, 0)
+            this.angle = 90
+            this.rotated = true
+          }
+          break
+        case "ArrowLeft":
+          if (this.angle !== 90 && this.angle !== 270) {
+            this.direction = new Vec2D(-1, 0)
+            this.angle = 270
+            this.rotated = true
+          }
+          break
       }
     })
+
+    setInterval(() => this.tick(), 400)
   }
 
   tick() {
-    if (this.lost) return
-    const newPos = this.body[0].clone().add(this.direction)
-    if (this.game.grid.wall(newPos)) return this.lose()
-    if (this.game.grid.map[newPos.x][newPos.y].src === "apple") {
-      this.game.placeApple()
-      this.desiredLength++
-      //@ts-ignore
-      document.getElementById("points").innerText = `${this.desiredLength - 3} Pommes`
-    }
+    if (!this.going) return
+    this.grid.setImage(this.position, "body")
+
+    if (this.actualLength + 1 >= this.desiredLength) {
+      this.grid.setImage(this.lastTailPosition, "default")
+      this.lastTailPosition = this.bodyPositions.shift()
+      this.grid.setImage(this.lastTailPosition, "tail")
+    } else this.actualLength++
 
     if (this.rotated) {
-      this.game.grid.setImage(this.body[0], "corner")
-      this.rotated = false
-    } else this.game.grid.setImage(this.body[0], "body")
+      this.grid.setImage(this.position, "corner")
+    }
+    this.grid.setRotation(this.position, this.angle)
+    this.position.add(this.direction)
 
-    this.game.grid.setAngle(newPos, this.angle)
-    this.body.unshift(newPos)
-
-    if (this.body.length > this.desiredLength) {
-      this.game.grid.setImage(this.body.pop(), "default")
-
-      const tailPosition = this.body[this.body.length - 1]
-      // const offsetAngle = this.game.grid.getImage(tailPosition) === "corner" ? 90 : 0
-      let newTailAngle = this.game.grid.getAngle(tailPosition)
-
-      for (
-        let i = 0;
-        this.game.grid.getImage(tailPosition.clone().add(Vec2D.angleToDirectionVector(newTailAngle % 360))) !==
-          "body" && i < 4;
-        i++
-      )
-        newTailAngle += 90
-
-      this.game.grid.setAngle(tailPosition, newTailAngle)
-      this.game.grid.setImage(tailPosition, "tail")
+    if (this.position.x === -1 || this.position.x === WIDTH || this.position.y === -1 || this.position.y === HEIGHT) {
+      this.lose()
+      return
     }
 
-    this.game.grid.setImage(newPos, "head")
+    this.bodyPositions.push(this.position.clone())
+    if (this.grid.getImageValue(this.position) === "apple") {
+      this.apple.replace()
+      this.desiredLength++
+    } else if (this.grid.getImageValue(this.position) !== "default") {
+      this.lose()
+    }
+
+    this.grid.setImage(this.position, "head")
+    this.grid.setRotation(this.position, this.angle)
+    this.rotated = false
   }
 
   lose() {
-    this.lost = true
-    // @ts-ignore
+    this.going = false
     document.getElementById("game-over").style.visibility = "visible"
-    // @ts-ignore
     document.getElementById("apple-display").textContent = this.desiredLength - 3
   }
 }
 
-const game = new Game(gameMods.solo)
+class Apple {
+  /**
+   * @param {Game} grid
+   */
+  constructor(game) {
+    this.game = game
+    this.grid = game.grid
+    this.position = Vec2D.random()
+  }
 
-document.getElementById("restart")?.addEventListener("click", () => {
-  game.reset()
-  //@ts-ignore
+  replace() {
+    if (this.game.snake.desiredLength >= 100) {
+      this.grid.going = false
+      document.getElementById("game-won").visibility = "visible"
+      return
+    }
+    this.position = Vec2D.random()
+    while (this.grid.getImageValue(this.position) !== "default") {
+      this.position = Vec2D.random()
+    }
+    this.grid.setRotation(this.position, 0)
+    this.grid.setImage(this.position, "apple")
+  }
+}
+
+class Game {
+  constructor() {
+    this.grid = new Grid()
+    this.apple = new Apple(this)
+    this.snake = new Snake(this.grid, this.apple)
+    this.apple.replace()
+  }
+}
+
+let game = new Game()
+
+document.getElementById("restart").addEventListener("click", () => {
+  game.grid.mainElement.remove()
   document.getElementById("game-over").style.visibility = "hidden"
+  game = new Game()
 })
 
-document.getElementById("restart2")?.addEventListener("click", () => {
-  game.reset()
-  //@ts-ignore
+document.getElementById("restart2").addEventListener("click", () => {
+  game.grid.mainElement.remove()
   document.getElementById("game-won").style.visibility = "hidden"
+  game = new Game()
 })
