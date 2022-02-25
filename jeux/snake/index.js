@@ -179,6 +179,7 @@ class Snake {
     if (this.grid.getImageValue(this.position) === "apple") {
       this.apple.replace()
       this.desiredLength++
+      document.getElementById("appleCount").innerText = this.desiredLength - 3
     } else if (this.grid.getImageValue(this.position) !== "default") {
       this.lose()
     }
@@ -222,6 +223,8 @@ class Apple {
 
 class Game {
   constructor() {
+    document.getElementById("appleCount").innerText = 0
+
     this.grid = new Grid()
     this.apple = new Apple(this)
     this.snake = new Snake(this.grid, this.apple)
