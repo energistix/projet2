@@ -1,0 +1,10 @@
+:root {
+  zoom: 400%;
+}
+
+img {
+  height: 1rem;
+  width: 1rem;
+  image-rendering: pixelated;
+  position: absolute;
+}
