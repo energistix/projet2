@@ -35,4 +35,9 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   border: black 10px solid;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.homeButton img {
+  background-color: rgba(255, 255, 255, 0.5);
 }
