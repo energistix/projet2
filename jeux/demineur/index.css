@@ -9,6 +9,8 @@ body {
   display: grid;
   overflow: hidden;
   margin: 0;
+  background: url(./assets/background.jpg) no-repeat;
+  background-size: cover;
 }
 
 #gameOver {

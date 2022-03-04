@@ -1,3 +1,8 @@
+:root {
+  background: url(./assets/background.jpg) no-repeat;
+  background-size: cover;
+}
+
 .gameImg {
   image-rendering: pixelated;
   width: 10rem;
