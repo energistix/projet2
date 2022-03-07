@@ -1,3 +1,10 @@
+:root {
+  background: url(./assets/background.jpg) no-repeat;
+  background-size: 70%;
+  background-position-x: center;
+  background-position-y: top;
+}
+
 #stateImg {
   width: 10rem;
   height: 20rem;
@@ -9,14 +16,12 @@ body {
   flex-direction: row;
   justify-content: center;
   font-size: 2rem;
-  background: url(./assets/background.jpg) no-repeat;
-  background-size: cover;
-  background-position: center;
 }
 
 .border {
   border: solid black 1rem;
   padding: 1rem;
+  background-color: white;
 }
 
 .red {
@@ -31,4 +36,8 @@ body {
   visibility: hidden;
   height: 0;
   width: 0;
+}
+
+#infos {
+  width: 35%;
 }
