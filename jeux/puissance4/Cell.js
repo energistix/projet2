@@ -13,11 +13,10 @@ class Cell {
       game.mouseOver(this)
     })
 
-    document.body.appendChild(this.img)
+    document.getElementById("game-container").appendChild(this.img)
   }
 
   set color(color) {
-    console.log(color)
     this.img.style.backgroundColor = color
   }
 }

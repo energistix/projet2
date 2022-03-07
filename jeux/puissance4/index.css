@@ -8,3 +8,8 @@ img {
   image-rendering: pixelated;
   position: absolute;
 }
+
+#game-container {
+  width: 7rem;
+  height: 6rem;
+}
