@@ -49,11 +49,12 @@ class Game {
   }
 
   checkWin() {
+    if (!this.selectedCell) return
     let count = 0
 
     for (let i = -3; i <= 3; i++) {
-      const x = this.selectCell.x + i
-      const y = this.selectCell.y + i
+      const x = this.selectedCell.x + i
+      const y = this.selectedCell.y + i
       if (x < 0 || x > 6 || y < 0 || y > 5) continue
       const cell = this.map[x][y]
       if (cell.color === this.selectedCell.color) {
@@ -61,12 +62,15 @@ class Game {
       }
     }
 
-    if (count >= 4) return this.won()
+    if (count >= 4) {
+      console.log("one")
+      return this.won()
+    }
     count = 0
 
     for (let i = -3; i <= 3; i++) {
-      const x = this.selectCell.x
-      const y = this.selectCell.y + i
+      const x = this.selectedCell.x
+      const y = this.selectedCell.y + i
       if (x < 0 || x > 6 || y < 0 || y > 5) continue
       const cell = this.map[x][y]
       if (cell.color === this.selectedCell.color) {
@@ -74,12 +78,15 @@ class Game {
       }
     }
 
-    if (count >= 4) return this.won()
+    if (count >= 4) {
+      console.log("two")
+      return this.won()
+    }
     count = 0
 
     for (let i = -3; i <= 3; i++) {
-      const x = this.selectCell.x + i
-      const y = this.selectCell.y
+      const x = this.selectedCell.x + i
+      const y = this.selectedCell.y
       if (x < 0 || x > 6 || y < 0 || y > 5) continue
       const cell = this.map[x][y]
       if (cell.color === this.selectedCell.color) {
@@ -87,12 +94,15 @@ class Game {
       }
     }
 
-    if (count >= 4) return this.won()
+    if (count >= 4) {
+      console.log("three")
+      return this.won()
+    }
     count = 0
 
     for (let i = -3; i <= 3; i++) {
-      const x = this.selectCell.x + i
-      const y = this.selectCell.y - i
+      const x = this.selectedCell.x + i
+      const y = this.selectedCell.y - i
       if (x < 0 || x > 6 || y < 0 || y > 5) continue
       const cell = this.map[x][y]
       if (cell.color === this.selectedCell.color) {
@@ -100,7 +110,10 @@ class Game {
       }
     }
 
-    if (count >= 4) return this.won()
+    if (count >= 4) {
+      console.log("four")
+      return this.won()
+    }
   }
 
   won() {
