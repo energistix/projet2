@@ -37,6 +37,8 @@ class Game {
     if (!this.selectedCell) return
     this.selectedCell.isFilled = true
     this.selectedCell.color = this.turn
+    this.checkWin()
+
     this.turn = this.turn == "red" ? "yellow" : "red"
     this.mouseOver(this.selectedCell)
   }
@@ -44,5 +46,64 @@ class Game {
   mouseOut() {
     if (this.selectedCell) this.selectedCell.color = "white"
     this.selectedCell = null
+  }
+
+  checkWin() {
+    let count = 0
+
+    for (let i = -3; i <= 3; i++) {
+      const x = this.selectCell.x + i
+      const y = this.selectCell.y + i
+      if (x < 0 || x > 6 || y < 0 || y > 5) continue
+      const cell = this.map[x][y]
+      if (cell.color === this.selectedCell.color) {
+        count += 1
+      }
+    }
+
+    if (count >= 4) return this.won()
+    count = 0
+
+    for (let i = -3; i <= 3; i++) {
+      const x = this.selectCell.x
+      const y = this.selectCell.y + i
+      if (x < 0 || x > 6 || y < 0 || y > 5) continue
+      const cell = this.map[x][y]
+      if (cell.color === this.selectedCell.color) {
+        count += 1
+      }
+    }
+
+    if (count >= 4) return this.won()
+    count = 0
+
+    for (let i = -3; i <= 3; i++) {
+      const x = this.selectCell.x + i
+      const y = this.selectCell.y
+      if (x < 0 || x > 6 || y < 0 || y > 5) continue
+      const cell = this.map[x][y]
+      if (cell.color === this.selectedCell.color) {
+        count += 1
+      }
+    }
+
+    if (count >= 4) return this.won()
+    count = 0
+
+    for (let i = -3; i <= 3; i++) {
+      const x = this.selectCell.x + i
+      const y = this.selectCell.y - i
+      if (x < 0 || x > 6 || y < 0 || y > 5) continue
+      const cell = this.map[x][y]
+      if (cell.color === this.selectedCell.color) {
+        count += 1
+      }
+    }
+
+    if (count >= 4) return this.won()
+  }
+
+  won() {
+    console.log("won")
   }
 }
