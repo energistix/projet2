@@ -19,6 +19,18 @@ class Game {
 
     document.getElementById("game-container").addEventListener("mouseout", this.mouseOut.bind(this))
     document.addEventListener("click", this.click.bind(this))
+    document.getElementById("restart-button").addEventListener("click", this.restart.bind(this))
+  }
+
+  restart() {
+    for (let x = 0; x < 7; x++) {
+      for (let y = 0; y < 6; y++) {
+        this.map[x][y].color = "white"
+        this.map[x][y].isFilled = false
+      }
+    }
+    this.won = false
+    document.getElementById("win-screen").style.visibility = "hidden"
   }
 
   mouseOver(cell) {
@@ -112,6 +124,11 @@ class Game {
   win() {
     this.won = true
     this.selectedCell = null
+    const winnerNameElt = document.getElementById("winner-color")
+    winnerNameElt.innerText = this.turn == "red" ? "rouge" : "jaune"
+    winnerNameElt.style.color = this.turn
+    document.getElementById("win-screen").style.visibility = "visible"
+
     return true
   }
 }
