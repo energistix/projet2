@@ -6,6 +6,7 @@ class Game {
   constructor() {
     this.turn = "red"
     this.selectedCell = null
+    this.won = false
 
     this.map = []
     for (let x = 0; x < 7; x++) {
@@ -21,6 +22,7 @@ class Game {
   }
 
   mouseOver(cell) {
+    if (this.won) return
     for (let y = 5; y >= 0; y--) {
       if (this.map[cell.x][y].isFilled == false) return this.selectCell(cell.x, y)
     }
@@ -34,11 +36,10 @@ class Game {
   }
 
   click() {
-    if (!this.selectedCell) return
+    if (!this.selectedCell || this.won) return
     this.selectedCell.isFilled = true
     this.selectedCell.color = this.turn
-    this.checkWin()
-
+    if (this.checkWin()) return
     this.turn = this.turn == "red" ? "yellow" : "red"
     this.mouseOver(this.selectedCell)
   }
@@ -48,75 +49,69 @@ class Game {
     this.selectedCell = null
   }
 
-  checkWin() {
-    if (!this.selectedCell) return
-    let count = 0
-
-    for (let i = -3; i <= 3; i++) {
-      const x = this.selectedCell.x + i
-      const y = this.selectedCell.y + i
-      if (x < 0 || x > 6 || y < 0 || y > 5) continue
-      const cell = this.map[x][y]
-      if (cell.color === this.selectedCell.color) {
-        count += 1
-      }
-    }
-
-    if (count >= 4) {
-      console.log("one")
-      return this.won()
-    }
-    count = 0
-
-    for (let i = -3; i <= 3; i++) {
-      const x = this.selectedCell.x
-      const y = this.selectedCell.y + i
-      if (x < 0 || x > 6 || y < 0 || y > 5) continue
-      const cell = this.map[x][y]
-      if (cell.color === this.selectedCell.color) {
-        count += 1
-      }
-    }
-
-    if (count >= 4) {
-      console.log("two")
-      return this.won()
-    }
-    count = 0
-
-    for (let i = -3; i <= 3; i++) {
-      const x = this.selectedCell.x + i
-      const y = this.selectedCell.y
-      if (x < 0 || x > 6 || y < 0 || y > 5) continue
-      const cell = this.map[x][y]
-      if (cell.color === this.selectedCell.color) {
-        count += 1
-      }
-    }
-
-    if (count >= 4) {
-      console.log("three")
-      return this.won()
-    }
-    count = 0
-
-    for (let i = -3; i <= 3; i++) {
-      const x = this.selectedCell.x + i
-      const y = this.selectedCell.y - i
-      if (x < 0 || x > 6 || y < 0 || y > 5) continue
-      const cell = this.map[x][y]
-      if (cell.color === this.selectedCell.color) {
-        count += 1
-      }
-    }
-
-    if (count >= 4) {
-      console.log("four")
-      return this.won()
-    }
+  validateCords(x, y) {
+    return x >= 0 && x < 7 && y >= 0 && y < 6
   }
 
-  won() {
-    console.log("won")
+  //TODO: optimizing this function by not checking the whole grid each time
+  checkWin() {
+    if (!this.selectedCell) return
+    // horizontal
+    for (let j = 0; j < 6 - 3; j++) {
+      for (let i = 0; i < 7; i++) {
+        if (
+          this.map[i][j].color == this.selectedCell.color &&
+          this.map[i][j + 1].color == this.selectedCell.color &&
+          this.map[i][j + 2].color == this.selectedCell.color &&
+          this.map[i][j + 3].color == this.selectedCell.color
+        )
+          return this.win()
+      }
+    }
+    // vertical
+    for (let i = 0; i < 7 - 3; i++) {
+      for (let j = 0; j < 6; j++) {
+        if (
+          this.map[i][j].color == this.selectedCell.color &&
+          this.map[i + 1][j].color == this.selectedCell.color &&
+          this.map[i + 2][j].color == this.selectedCell.color &&
+          this.map[i + 3][j].color == this.selectedCell.color
+        )
+          return this.win()
+      }
+    }
+
+    // first type of diagonal
+    for (let i = 3; i < 7; i++) {
+      for (let j = 0; j < 6 - 3; j++) {
+        if (
+          this.map[i][j].color == this.selectedCell.color &&
+          this.map[i - 1][j + 1].color == this.selectedCell.color &&
+          this.map[i - 2][j + 2].color == this.selectedCell.color &&
+          this.map[i - 3][j + 3].color == this.selectedCell.color
+        )
+          return this.win()
+      }
+    }
+
+    // second type of diagonal
+    for (let i = 3; i < 7; i++) {
+      for (let j = 3; j < 6; j++) {
+        if (
+          this.map[i][j].color == this.selectedCell.color &&
+          this.map[i - 1][j - 1].color == this.selectedCell.color &&
+          this.map[i - 2][j - 2].color == this.selectedCell.color &&
+          this.map[i - 3][j - 3].color == this.selectedCell.color
+        )
+          return this.win()
+      }
+    }
+    return false
+  }
+
+  win() {
+    this.won = true
+    this.selectedCell = null
+    return true
   }
 }

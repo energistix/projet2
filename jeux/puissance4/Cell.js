@@ -19,4 +19,8 @@ class Cell {
   set color(color) {
     this.img.style.backgroundColor = color
   }
+
+  get color() {
+    return this.img.style.backgroundColor
+  }
 }
